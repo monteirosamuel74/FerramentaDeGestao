@@ -1,0 +1,2 @@
+C:\Users\samuel.silva\source\repos\Samuel\FerramentaDeGestao\FerramentaDeGestao\obj\Debug\FerramentaDeGestao.csproj.AssemblyReference.cache
+C:\Users\samuel.silva\source\repos\Samuel\FerramentaDeGestao\FerramentaDeGestao\obj\Debug\FerramentaDeGestao.csproj.CoreCompileInputs.cache
