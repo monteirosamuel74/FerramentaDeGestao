@@ -42,6 +42,15 @@ namespace FerramentaDeGestao
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtPlano;
 
         /// <summary>
+        /// Controle txtPrazoPlano.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrazoPlano;
+
+        /// <summary>
         /// Controle txtDesempenhar.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace FerramentaDeGestao
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtDesempenhar;
+
+        /// <summary>
+        /// Controle txtPrazoDesempenhar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrazoDesempenhar;
 
         /// <summary>
         /// Controle txtChecar.
@@ -60,6 +78,15 @@ namespace FerramentaDeGestao
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtChecar;
 
         /// <summary>
+        /// Controle txtPrazoChecar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrazoChecar;
+
+        /// <summary>
         /// Controle txtAcao.
         /// </summary>
         /// <remarks>
@@ -67,6 +94,15 @@ namespace FerramentaDeGestao
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtAcao;
+
+        /// <summary>
+        /// Controle txtPrazoAcao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrazoAcao;
 
         /// <summary>
         /// Controle txtParticipantes.
