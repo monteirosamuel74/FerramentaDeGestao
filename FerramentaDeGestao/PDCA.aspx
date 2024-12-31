@@ -1,66 +1,77 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pagina.master" AutoEventWireup="true" CodeFile="Inicial.aspx.cs" Inherits="Inicial" EnableEventValidation="false" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="~/PDCA.aspx.cs" Inherits="FerramentaDeGestao.PDCA" %>
 
-<script runat="server">
-
-    protected void btnAdicionar_Click(object sender, EventArgs e)
-    {
-
-    }
-</script>
-
-
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <script type="text/javascript">
-        function AdicionarPDCA() {
-            document.getElementById("<%= btnAdicionar.ClientID%>").click();
-        }
-    </script>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>PDCA - Ferramenta de Gestão</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
     <form id="form1" runat="server">
-        <div>
-            <h3>Adicionar Novo PDCA</h3>
-            <label for="txtPlano">Plano: </label>
-            <input type="text" id="txtPlano" runat="server" /><br />
-            <label for="txtDesignacao">Designação: </label>
-            <input type="text" id="txtDesignacao" runat="server" /><br />
-            <label for="txtChecar">Checar: </label>
-            <input type="text" id="txtChecar" runat="server" /><br />
-            <label for="txtAcao">Ação: </label>
-            <input type="text" id="txtAcao" runat="server" /><br />
-            <label for="txtParticipantes">Participantes: </label>
-            <input type="text" id="txtParticipantes" runat="server" /><br />
-            <button type="button" onclick="AdicionarPDCA()">Adicionar</button>
-        </div>
-        <div>
-            PDCA<br />
-            <div class="col-sm-9">
-                <table class="table table-bordered table-condensed table-responsive small">
-                    <thead>
-                        <tr>
-                            <th>PLANO</th>
-                            <th>DESIGNAÇÃO</th>
-                            <th>CHECAR</th>
-                            <th>AÇÃO</th>
-                        </tr>
-                    </thead>
-                    <tbody id="conteudoPDCA" style="visibility: hidden">
-                        <asp:Repeater runat="server" ID="rptPDCA">
-                            <ItemTemplate>
-                                <asp:TableRow>
-                                    <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Plano") %></td>
-                                    <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Designacao") %></td>
-                                    <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Checar") %></td>
-                                    <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Acao") %></td>
-                                </asp:TableRow>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </tbody>
-                </table>
+        <div class="container">
+            <h2>PDCA</h2>
+            <div class="row">
+                <div class="col-sm-9">
+                    <table class="table table-bordered table-condensed table-responsive small">
+                        <thead>
+                            <tr>
+                                <th>PLANO</th>
+                                <th>PRAZO PLANO</th>
+                                <th>DESEMPENHAR</th>
+                                <th>PRAZO DESEMPENHAR</th>
+                                <th>CHECAR</th>
+                                <th>PRAZO CHECAR</th>
+                                <th>AÇÃO</th>
+                                <th>PRAZO AÇÃO</th>
+                                <th>PARTICIPANTES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="conteudoPDCA">
+                            <asp:Repeater runat="server" ID="rptPDCA">
+                                <ItemTemplate>
+                                    <tr>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Plano") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "PRAZO_PLANO") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Desempenhar") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "PRAZO_DESEMPENHAR") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Checar") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "PRAZO_CHECAR") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Acao") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "PRAZO_ACAO") %></td>
+                                        <td class="text-center"><%# DataBinder.Eval(Container.DataItem, "Participantes") %></td>
+                                    </tr>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+            <!-- Formulário para inserir dados do PDCA -->
+            <div class="form-group">
+                <h3>Adicionar Novo PDCA</h3>
+                <label for="txtPlano">Plano: </label>
+                <input type="text" id="txtPlano" runat="server" class="form-control" /><br />
+                <label for="txtDesempenhar">Desempenhar: </label>
+                <input type="text" id="txtDesempenhar" runat="server" class="form-control" /><br />
+                <label for="txtChecar">Checar: </label>
+                <input type="text" id="txtChecar" runat="server" class="form-control" /><br />
+                <label for="txtAcao">Ação: </label>
+                <input type="text" id="txtAcao" runat="server" class="form-control" /><br />
+                <label for="txtParticipantes">Participantes: </label>
+                <input type="text" id="txtParticipantes" runat="server" class="form-control" /><br />
+                <button type="button" class="btn btn-primary" onclick="AdicionarPDCA()">Adicionar</button>
+            </div>
+            <asp:Button ID="btnAdicionar" runat="server" Text="Adicionar" OnClick="btnAdicionar_Click" Style="display: none;" />
         </div>
     </form>
-    <asp:Button ID="btnAdicionar" runat="server" Text="Adicionar" OnClick="btnAdicionar_Click" style="display:none;" />
-</asp:Content>
+
+    <script type="text/javascript">
+        function AdicionarPDCA() {
+            document.getElementById("<%= btnAdicionar.ClientID %>").click();
+        }
+    </script>
+
+
+</body>
+</html>

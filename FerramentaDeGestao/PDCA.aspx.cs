@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -21,7 +22,7 @@ namespace FerramentaDeGestao
 
         private void BindPDCARepeater()
         {
-            DataTable dt = (DataTable)ViewState["CriarTabelaPDCA"] ?? GetPDCADetails();
+            DataTable dt = GetPDCADetails();
 
             rptPDCA.DataSource = dt;
             rptPDCA.DataBind();
@@ -30,28 +31,59 @@ namespace FerramentaDeGestao
         private DataTable GetPDCADetails()
         {
             DataTable dt = new DataTable();
-            dt.Columns.Add("Plano");
-            dt.Columns.Add("Designacao");
-            dt.Columns.Add("Checar");
-            dt.Columns.Add("Acao");
-            dt.Columns.Add("Participantes");
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SISPREVConnectionString"].ConnectionString;
 
-            dt.Rows.Add(dt);
+            using (SqlConnection conn  = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Plano, Desempenhar, Checar, Acao, Participantes FROM PDCA;";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                da.Fill(dt);
+            }
+
+            if (dt.Rows.Count == 0)
+            {
+                dt.Rows.Add("Definir metas e objetivos", "Implementar ações", "Avaliar resultados", "Corrigir desvios", "Equipe A");
+                dt.Rows.Add("Planejamento estratégico", "Execução de tarefas", "Monitoramento de desempenho", "Ajustes necessários", "Equipe B");
+            }
 
             return dt;
         }
 
         protected void btnAdicionar_Click(object sender, EventArgs e)
         {
-            DataTable dt = (DataTable)ViewState["CriarTabelaPDCA"] ?? GetPDCADetails();
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SISPREVConnectionString"].ConnectionString;
 
-            dt.Rows.Add(txtPlano.Value, txtDesignacao.Value, txtChecar.Value, txtAcao, txtParticipantes.Value);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO PDCA (Plano, Desempenhar, Checar, Acao, Participantes)" +
+                    "VALUE (@Plano, @Desempenhar, @Checar, @Acao, @Participantes);";
 
-            ViewState["CriarTabelaPDCA"] = dt;
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Plano", txtPlano.Value);
+                    cmd.Parameters.AddWithValue("@Desempenhar", txtDesempenhar.Value);
+                    cmd.Parameters.AddWithValue("@Checar", txtChecar.Value);
+                    cmd.Parameters.AddWithValue("@Acao", txtAcao.Value);
+                    cmd.Parameters.AddWithValue("@Participantes", txtParticipantes.Value);
 
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            
             BindPDCARepeater();
 
+            ClearForm();
+        }
+
+        private void ClearForm()
+        {
             txtPlano.Value = string.Empty;
+            txtDesempenhar.Value = string.Empty;
+            txtChecar.Value = string.Empty;
+            txtAcao.Value = string.Empty;
+            txtParticipantes.Value = string.Empty;
         }
     }
 }
