@@ -52,12 +52,20 @@
                 <h3>Adicionar Novo PDCA</h3>
                 <label for="txtPlano">Plano: </label>
                 <input type="text" id="txtPlano" runat="server" class="form-control" /><br />
+                <label for="txtPrazoPlano">Prazo conclusão do Planejamento: </label>
+                <input type="text" id="txtPrazoPlano" runat="server" class="form-control" /><br />
                 <label for="txtDesempenhar">Desempenhar: </label>
                 <input type="text" id="txtDesempenhar" runat="server" class="form-control" /><br />
+                <label for="txtPrazoDesempenhar">Prazo conclusão da Ação: </label>
+                <input type="text" id="txtPrazoDesempenhar" runat="server" class="form-control" /><br />
                 <label for="txtChecar">Checar: </label>
                 <input type="text" id="txtChecar" runat="server" class="form-control" /><br />
+                <label for="txtPrazoChecar">Prazo conclusão da Checagem: </label>
+                <input type="text" id="txtPrazoChecar" runat="server" class="form-control" /><br />
                 <label for="txtAcao">Ação: </label>
                 <input type="text" id="txtAcao" runat="server" class="form-control" /><br />
+                <label for="txtPrazoAcao">Prazo conclusão da Ação: </label>
+                <input type="text" id="txtPrazoAcao" runat="server" class="form-control" /><br />
                 <label for="txtParticipantes">Participantes: </label>
                 <input type="text" id="txtParticipantes" runat="server" class="form-control" /><br />
                 <button type="button" class="btn btn-primary" onclick="AdicionarPDCA()">Adicionar</button>
