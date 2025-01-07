@@ -1,4 +1,4 @@
-﻿using GSF.Net.Smtp;
+﻿using FerramentaDeGestao.WebService;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,8 +8,10 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Web;
+using System.Web.Optimization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static FerramentaDeGestao.WebService.ParticipanteService;
 
 namespace FerramentaDeGestao
 {
@@ -20,6 +22,14 @@ namespace FerramentaDeGestao
             if (!IsPostBack)
             {
                 BindPDCARepeater();
+                if (Session["Participantes"] != null)
+                {
+                    List<string> participantes = (List<string>)Session["Participantes"];
+                    rptParticipantes.DataSource = participantes;
+                    rptParticipantes.DataBind();
+
+                    Session.Remove("Participantes");
+                }
             }
         }
 
@@ -38,15 +48,16 @@ namespace FerramentaDeGestao
 
             using (SqlConnection conn  = new SqlConnection(connectionString))
             {
-                string query = @"SELECT Plano, PRAZO_PLANO, Desempenhar, PRAZO_DESEMPENHAR, Checar, PRAZO_CHECAR, Acao, PRAZO_ACAO, Participantes FROM PDCA;";
+                string query = 
+                    "SELECT Plano, PRAZO_PLANO, Desempenhar, PRAZO_DESEMPENHAR, Checar, PRAZO_CHECAR, Acao, PRAZO_ACAO, Participantes FROM PDCA;";
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 da.Fill(dt);
             }
 
             if (dt.Rows.Count == 0)
             {
-                dt.Rows.Add("Definir metas e objetivos", DateTime.Now.AddDays(7), "Implementar ações",DateTime.Now.AddDays(14) , "Avaliar resultados",DateTime.Now.AddDays(21) , "Corrigir desvios",DateTime.Now.AddDays(28) , "Equipe A");
-                dt.Rows.Add("Planejamento estratégico", DateTime.Now.AddDays(7), "Execução de tarefas", DateTime.Now.AddDays(14), "Monitoramento de desempenho", DateTime.Now.AddDays(21), "Ajustes necessários", DateTime.Now.AddDays(28), "Equipe B");
+                dt.Rows.Add("Definir metas e objetivos", "01/01/2025", "Implementar ações", "08/01/2025", "Avaliar resultados", "15/01/2025", "Corrigir desvios", "22/01/2025", "Equipe A");
+                //dt.Rows.Add("Planejamento estratégico", "Execução de tarefas", "Monitoramento de desempenho", "Ajustes necessários", "Equipe B");
             }
 
             return dt;
@@ -58,20 +69,20 @@ namespace FerramentaDeGestao
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "INSERT INTO PDCA (Plano, PRAZO_PLANO, Desempenhar, PRAZO_DESEMPENHAR, Checar, PRAZO_CHECAR, Acao, PRAZO_ACAO, Participantes)" +
-                    "VALUE (@Plano, @PRAZO_PLANO, @Desempenhar, @PRAZO_DESEMPENHAR, @Checar, @PRAZO_CHECAR, @Acao, @PRAZO_ACAO, @Participantes);";
+                string query = "SET DATEFORMAT DMY; INSERT INTO PDCA (Plano, PRAZO_PLANO, Desempenhar, PRAZO_DESEMPENHAR, Checar, PRAZO_CHECAR, Acao, PRAZO_ACAO, Participantes)" +
+                    "VALUES (@Plano, @PRAZO_PLANO, @Desempenhar, @PRAZO_DESEMPENHAR, @Checar, @PRAZO_CHECAR, @Acao, @PRAZO_ACAO, @Participantes);";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Plano", txtPlano.Value);
-                    cmd.Parameters.AddWithValue("@PRAZO_PLANO", txtPrazoPlano.Value);
+                    cmd.Parameters.AddWithValue("@PRAZO_PLANO", dataPlano.Value);
                     cmd.Parameters.AddWithValue("@Desempenhar", txtDesempenhar.Value);
-                    cmd.Parameters.AddWithValue("@PRAZO_DESEMPENHAR", txtPrazoDesempenhar.Value);
+                    cmd.Parameters.AddWithValue("@PRAZO_DESEMPENHAR", dataDesempenhar.Value);
                     cmd.Parameters.AddWithValue("@Checar", txtChecar.Value);
-                    cmd.Parameters.AddWithValue("@PRAZO_CHECAR", txtPrazoChecar.Value);
+                    cmd.Parameters.AddWithValue("@PRAZO_CHECAR", dataChecar.Value);
                     cmd.Parameters.AddWithValue("@Acao", txtAcao.Value);
-                    cmd.Parameters.AddWithValue("@PRAZO_ACAO", txtPrazoAcao.Value);
-                    cmd.Parameters.AddWithValue("@Participantes", txtParticipantes.Value);
+                    cmd.Parameters.AddWithValue("@PRAZO_ACAO", dataAcao.Value);
+                    cmd.Parameters.AddWithValue("@Participantes", rptParticipantes.ToString());
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -111,8 +122,26 @@ namespace FerramentaDeGestao
             txtChecar.Value = string.Empty;
             txtPrazoChecar.Value = string.Empty;
             txtAcao.Value = string.Empty;
-            txtPrazoAcao.Value = string.Empty;
-            txtParticipantes.Value = string.Empty;
+        }
+
+        protected void gdrResultados_ItemCreated(object sender, DataGridItemEventArgs e)
+        {
+
+        }
+
+        protected void gdrResultados_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+
+        }
+
+        protected void gdrResultados_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+
+        }
+
+        protected void btnConsultar_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private string GetColaboradorEmailById(string colaboradorId)
