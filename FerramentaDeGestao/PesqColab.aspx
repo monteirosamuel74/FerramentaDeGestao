@@ -15,7 +15,7 @@
                     <td>
                         <asp:TextBox ID="txtPesqColab" runat="server" Width="300px" ValueField="Descrição" Obrigatorio="true"></asp:TextBox>
                         <asp:RequiredFieldValidator runat="server" ID="rfvPesquisa" Display="None" EnableClientScript="true"
-                            ControlToValidate="pesqColab" ErrorMessage="Informe o nome para pesquisa."></asp:RequiredFieldValidator>
+                            ControlToValidate="txtPesqColab" ErrorMessage="Informe o nome para pesquisa."></asp:RequiredFieldValidator>
                         <asp:Button ID="btnPesqColab" runat="server" Text="Pesquisar" OnClick="btnPesqColab_Click" />
                     </td>
                 </tr>
@@ -24,8 +24,13 @@
                 OnItemCreated="grdResultados_ItemCreated" OnItemDataBound="grdResultados_ItemDataBound" OnItemCommand="grdResultados_ItemCommand">
                 <HeaderStyle Font-Bold="true" ForeColor="Black" BackColor="WhiteSmoke" BorderColor="White" />
                 <ItemStyle ForeColor="Black" BorderColor="WhiteSmoke" BackColor="White" />
-                <AlternatingItemStyle BackColor="Wheat" />
+                <AlternatingItemStyle BackColor="#cccccc" />
                 <Columns>
+                    <asp:TemplateColumn HeaderText="Selecionar">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkSelecionar" runat="server" Width="50px"/>
+                        </ItemTemplate>
+                    </asp:TemplateColumn>
                     <asp:BoundColumn DataField="COLABORADOR_ID" HeaderText="C&#243;digo">
                         <ItemStyle Width="50px" />
                     </asp:BoundColumn>
@@ -33,13 +38,14 @@
                     <asp:TemplateColumn HeaderText="Nome" SortExpression="Nome">
                         <ItemTemplate>
                             <asp:LinkButton ID="lkbNome" runat="server" CommandName="Selecionar" CausesValidation="false"
-                                ToolTip="Clique para selecionar esse registro."></asp:LinkButton>
+                                ToolTip="Clique para selecionar esse registro." Text='<%# Eval("Nome") %>'></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateColumn>
                     <asp:BoundColumn DataField="Email" HeaderText="E-mail" Visible="true" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"></asp:BoundColumn>
                 </Columns>
                 <PagerStyle Mode="NumericPages" Visible="false" />
             </asp:DataGrid>
+            <asp:Button ID="btnInserir" runat="server" Text="Inserir participante" OnClick="btnInserir_Click" />
         </div>
     </form>
 </body>

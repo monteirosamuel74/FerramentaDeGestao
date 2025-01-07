@@ -20,6 +20,14 @@ namespace FerramentaDeGestao
             if (!IsPostBack)
             {
                 BindPDCARepeater();
+                if (Session["Participantes"] != null)
+                {
+                    List<string> participantes = (List<string>)Session["Participantes"];
+                    rptParticipantes.DataSource = participantes;
+                    rptParticipantes.DataBind();
+
+                    Session.Remove("Participantes");
+                }
             }
         }
 
@@ -72,7 +80,7 @@ namespace FerramentaDeGestao
                     cmd.Parameters.AddWithValue("@PRAZO_CHECAR", dataChecar.Value);
                     cmd.Parameters.AddWithValue("@Acao", txtAcao.Value);
                     cmd.Parameters.AddWithValue("@PRAZO_ACAO", dataAcao.Value);
-                    cmd.Parameters.AddWithValue("@Participantes", txtParticipantes.Value);
+                    cmd.Parameters.AddWithValue("@Participantes", rptParticipantes.ToString());
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -91,7 +99,6 @@ namespace FerramentaDeGestao
             txtDesempenhar.Value = string.Empty;
             txtChecar.Value = string.Empty;
             txtAcao.Value = string.Empty;
-            txtParticipantes.Value = string.Empty;
         }
 
         protected void gdrResultados_ItemCreated(object sender, DataGridItemEventArgs e)
@@ -111,22 +118,7 @@ namespace FerramentaDeGestao
 
         protected void btnConsultar_Click(object sender, EventArgs e)
         {
-            string nome = txtBusca.ToString().ToUpper();
-            ParticipanteService service = new ParticipanteService();
-            List<ParticipanteService.Participante> participantes = service.BuscarParticipantes(nome);
-
-            if (participantes.Count > 0)
-            {
-                gdrResultados.DataSource = participantes;
-                gdrResultados.DataBind();
-            }
-            else
-                ScriptManager.RegisterClientScriptBlock(
-                    this, 
-                    GetType(), 
-                    "MSG", 
-                    "< script > alert('Não foram encontrados registros para a pesquisa realizada ou o Segurado procurado encontra-se excluído!');</ script > ", 
-                    false);
+            
         }
     }
 }

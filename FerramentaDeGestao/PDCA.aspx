@@ -3,8 +3,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <title>PDCA - Ferramenta de Gestão</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -50,8 +55,27 @@
             <!-- Formulário para inserir dados do PDCA -->
             <div class="form-group">
                 <h3>Adicionar Novo PDCA</h3>
+
+                <label for="rptParticipantes">Participantes: </label>
+                <div class="input-group">
+                    <asp:Repeater ID="rptParticipantes" runat="server">
+                        <ItemTemplate>
+                            <div><%# Container.DataItem %></div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                    <asp:Button ID="btnBuscarPessoa" runat="server" CssClass="botaoPesquisar" Text="Buscar" OnClientClick="abrirPopup();" />
+                </div>
+                <input type="hidden" id="participantesSelecionados" runat="server" />
+
                 <label for="txtPlano">Plano: </label>
-                <input type="text" id="txtPlano" runat="server" class="form-control" /><br />
+                <div class="input-group">
+                    <input type="text" id="txtPlano" runat="server" class="form-control" /><br />
+                    <div class="input-group-append">
+                        <span id="helpPlano" class="input-group-text" data-toggle="popover" title="Dica">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                    </div>
+                </div>
                 <label for="txtPrazoPlano">Prazo Plano: </label>
                 <input type="date" id="dataPlano" runat="server" class="form-control col-sm-2" /><br />
                 <label for="txtDesempenhar">Desempenhar: </label>
@@ -66,49 +90,7 @@
                 <input type="text" id="txtAcao" runat="server" class="form-control" /><br />
                 <label for="txtPrazoAcao">Prazo Ação: </label>
                 <input type="date" id="dataAcao" runat="server" class="form-control col-sm-2" /><br />
-                <label for="txtParticipantes">Participantes: </label>
-                <div class="input-group">
-                            <asp:TextBox ID="txtParticipante" runat="server" CssClass="caixaTexto" ReadOnly="true"></asp:TextBox>
-                            <asp:Button ID="btnBuscarPessoa" runat="server" CssClass="botaoPesquisar" Text="Buscar" OnClientClick="abrirPopup();" />
-                </div>
 
-                <input type="hidden" id="participantesSelecionados" runat="server" />
-
-                <%--<div class="modal" id="modalBuscaParticipantes" tabindex="-1" role="definition">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Buscar Participantes</h5>
-                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="text" id="txtBusca" runat="server" class="form-control" placeholder="Digite o nome do participante" />
-                                <asp:Button ID="btnConsultar" runat="server" Text="Buscar" OnClick="btnConsultar_Click"/>
-                                <ul id="resultadosBusca" class="list-group mt-3"></ul>
-                                    <asp:DataGrid CssClass="rotulo" ID="gdrResultados" runat="server" AutoGenerateColumns="false"
-                                        Width="100%" AllowPaging="true" CellPadding="2" PageSize="25" OnItemCreated="gdrResultados_ItemCreated" 
-                                        OnItemDataBound="gdrResultados_ItemDataBound" Font-Size="Smaller" OnItemCommand="gdrResultados_ItemCommand" >
-                                        <HeaderStyle Font-Bold="true" ForeColor="Black" BackColor="#E0DFE3" BorderColor="#CCCCCC" />
-                                        <HeaderStyle Font-Bold="true" ForeColor="Black" BackColor="#E0DFE3" BorderColor="#CCCCCC" />
-                                        <AlternatingItemStyle BackColor="WhiteSmoke" />
-                                        <Columns>
-                                            <asp:BoundColumn DataField="COLABORADOR_ID" HeaderText="C&#243;digo" Visible="false">
-                                                <ItemStyle Width="50px" />
-                                            </asp:BoundColumn>
-                                            <asp:BoundColumn HeaderText="Nome" DataField="Nome" />
-                                            <asp:BoundColumn HeaderText="Email" DataField="Email" />
-                                        </Columns>
-                                    </asp:DataGrid>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn-secondary" data-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn-primary" onclick="confirmarSelecao()">Confirmar Seleção</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>--%>
             </div>
             <asp:Button ID="btnAdicionar" runat="server" Text="Adicionar" OnClick="btnAdicionar_Click" Style="display: none;" />
         </div>
@@ -117,9 +99,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         function abrirPopup() {
-            window.open('../PesqColab.aspx', 'popupWindow', 'width=700,height=500,scrollbars=no,resizable=no');
+            window.open('PesqColab.aspx', 'popupWindow', 'width=700,height=500,scrollbars=no,resizable=no');
         }
 
+        function atualizarParticipantes() {
+            __doPostBack('atualizarParticipantes', '');
+        }
+
+        var dicaPlano = "Plan (planejar)<br>Na primeira etapa, você vai planejar a mudança que vai fazer. Pode ser a ação corretiva de um risco, uma oportunidade de melhoria ou um projeto.<br>"+
+            "Partindo da identificação da situação atual e da coleta de dados, você vai definir o que deseja mudar, por que deseja mudar e como vai mudar.<br>" +
+            "Isso se traduzirá no desenho de um projeto com escopo, abordagem, recursos, pessoas envolvidas e indicadores.";
+        $(document).ready(function () {
+            $('#helpPlano').popover({ content: dicaPlano, html: true });
+        });
 
         function confirmarSelecao() {
             var participantes = [];

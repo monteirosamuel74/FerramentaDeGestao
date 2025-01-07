@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Data.SqlClient;
 using System.Web.Configuration;
+using System.Data;
 
 namespace FerramentaDeGestao.WebService
 {
@@ -18,6 +19,22 @@ namespace FerramentaDeGestao.WebService
     // [System.Web.Script.Services.ScriptService]
     public class ParticipanteService : System.Web.Services.WebService
     {
+        protected DataTable RESULTADOCONSULTA
+        {
+            get
+            {
+                DataTable dt = null;
+
+                if (Session["CONSULTA"] != null)
+                    dt = (DataTable)Session["CONSULTA"];
+
+                return dt;
+            }
+            set
+            {
+                Session["CONSULTA"] = value;
+            }
+        }
 
         [WebMethod]
         public List<Participante> BuscarParticipantes(string query)
@@ -32,8 +49,10 @@ namespace FerramentaDeGestao.WebService
                 using (SqlCommand cmd = new SqlCommand(
                     "SELECT COLABORADOR_ID, Nome, Email FROM COLABORADOR2 WHERE Nome LIKE @query", conn))
                 {
-                    cmd.Parameters.AddWithValue("@query", "%" + query + "%");
+                    cmd.Parameters.AddWithValue("@query", "'%" + query + "%'");
 
+                    SqlDataAdapter exec = new SqlDataAdapter();
+                    exec.SelectCommand = cmd;
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
